@@ -28,7 +28,7 @@ class GuiWindow:
 
                 self.d[key] = value
 
-        print(self.d.keys())
+        # print(self.d.keys())
 
         # Assign the variable names
         self.name_var = StringVar()
@@ -151,12 +151,12 @@ class GuiWindow:
         re_pwd.place(x=170, y=245, anchor="center")
 
         e1 = Entry(self.top, textvariable=self.name_var)
-        e2 = Entry(self.top, textvariable=self.pwd_var)
-        e3 = Entry(self.top, textvariable=self.re_pwd_var)
+        e2 = Entry(self.top, textvariable=self.pwd_var, show="*")
+        e3 = Entry(self.top, textvariable=self.re_pwd_var, show="*")
 
-        e1.place(x=250, y=110)
-        e2.place(x=250, y=170)
-        e3.place(x=250, y=230)
+        e1.place(x=270, y=110)
+        e2.place(x=270, y=170)
+        e3.place(x=270, y=230)
 
         # BUTTONS
         sub_btn = tkinter.Button(self.top, text="Sign Up for free!", width=25, fg="green", bg="white",
