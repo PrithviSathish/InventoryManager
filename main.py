@@ -6,4 +6,5 @@ from Login import tkinterFile
 print("----- WELCOME -----")
 usr = tkinterFile.GuiWindow()
 usr.login_or_sign()
-usr_nme = usr.name
+usr_nme, sign_in = usr.name, usr.sign_in
+# print(usr_nme, sign_in)

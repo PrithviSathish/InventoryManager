@@ -1,44 +1,45 @@
 import mysql.connector
 from datetime import datetime
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="PrIv@MySQL",
-    database="testbase"
-)
 
-mycursor = db.cursor()
+class DatabaseCommand:
 
-'''
-def CreateDatabase(name):
-    mycursor.execute(f"CREATE DATABASE {name}")
-'''
+    def __init__(self):
+        self.db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="PrIv@MySQL",
+            database="testbase"
+        )
 
-def CreateTable(tablename, values):
-    mycursor.execute(f"CREATE TABLE {tablename} {values}")
+        self.mycursor = self.db.cursor()
 
-def Describe(tablename):
-    mycursor.execute(f"DESCRIBE {tablename}")
-    for x in mycursor:
-        print(x)
+    def create_database(self, name):
+        self.mycursor.execute(f"CREATE DATABASE {name}")
 
-def Insert(tablename, values, columns=None):
-    if columns == None:
-        mycursor.execute(f"INSERT INTO {tablename} VALUES {values}")
-    else:
-        mycursor.execute(f"INSERT INTO {tablename} {columns} VALUES {values}")
-    db.commit()
-    DisplayTable(tablename)
+    def create_table(self, tablename, values):
+        self.mycursor.execute(f"CREATE TABLE {tablename} {values}")
 
-def DisplayTable(tablename, i="*"):
-    mycursor.execute(f"SELECT {i} FROM {tablename}")
-    for x in mycursor:
-        print(x)
+    def describe(self, tablename):
+        self.mycursor.execute(f"DESCRIBE {tablename}")
+        for x in self.mycursor:
+            print(x)
 
-def filter(tablename, column_names, where=None, group_by=None, having=None, order_by=None):
-    mycursor.execute(f"SELECT {column_names} FROM {tablename}")
+    def insert(self, tablename, values, columns=None):
+        if not columns:
+            self.mycursor.execute(f"INSERT INTO {tablename} VALUES {values}")
+        else:
+            self.mycursor.execute(f"INSERT INTO {tablename} {columns} VALUES {values}")
+        self.db.commit()
+        self.display_table(tablename)
 
-def Other(query):
-    mycursor.execute(query)
+    def display_table(self, tablename, i="*"):
+        self.mycursor.execute(f"SELECT {i} FROM {tablename}")
+        for x in self.mycursor:
+            print(x)
 
+    def filter(self, tablename, column_names, where=None, group_by=None, having=None, order_by=None):
+        self.mycursor.execute(f"SELECT {column_names} FROM {tablename}")
+
+    def other(self, query):
+        self.mycursor.execute(query)

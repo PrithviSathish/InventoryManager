@@ -11,6 +11,7 @@ class GuiWindow:
         self.name = ""
         self.root.geometry("600x500")
         self.root.configure(bg="light sky blue")
+        self.sign_in = False
         self.sign_page = False
 
         # Create the dictionary
@@ -63,6 +64,7 @@ class GuiWindow:
 
             else:
                 tkinter.messagebox.showinfo("Verification", "Username and Password verified!")
+                self.sign_in = False
                 self.root.destroy()
                 # self.top.destroy()
                 return True
@@ -70,21 +72,27 @@ class GuiWindow:
         # print(name, pwd)
 
     def sign_submit(self):
-        name = self.name_var.get()
+        self.name = self.name_var.get()
         pwd = self.pwd_var.get()
         re_pwd = self.re_pwd_var.get()
 
-        if name not in self.d.keys():
-            if pwd == re_pwd:
-                self.f.write(name + ":" + pwd + "\n")
-                tkinter.messagebox.showinfo("Verification", "Account created successfully")
-                self.root.destroy()
-                self.top.destroy()
-                return True
+        if self.name != "" or pwd != "":
+
+            if self.name not in self.d.keys():
+                if pwd == re_pwd:
+                    self.f.write(self.name + ":" + pwd + "\n")
+                    tkinter.messagebox.showinfo("Verification", "Account created successfully")
+                    self.sign_in = True
+                    self.top.destroy()
+                    self.root.destroy()
+                    return True
+                else:
+                    tkinter.messagebox.showerror("Verification", "Re-entered password does not match!")
             else:
-                tkinter.messagebox.showerror("Verification", "Re-entered password does not match!")
+                tkinter.messagebox.showerror("Verification", "Username already exists")
+
         else:
-            tkinter.messagebox.showerror("Verification", "Username already exists")
+            tkinter.messagebox.showerror("Verification", "Please enter valid input")
 
     def login(self):
         self.root.title("Inventory Manager")
