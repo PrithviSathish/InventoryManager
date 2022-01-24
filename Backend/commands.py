@@ -4,18 +4,19 @@ from datetime import datetime
 
 class DatabaseCommand:
 
-    def __init__(self):
+    def __init__(self, user=None):
         self.db = mysql.connector.connect(
             host="localhost",
             user="root",
             passwd="PrIv@MySQL",
-            database="testbase"
+            database=user
         )
 
         self.mycursor = self.db.cursor()
 
     def create_database(self, name):
         self.mycursor.execute(f"CREATE DATABASE {name}")
+        self.mycursor.execute(f"USE {name}")
 
     def create_table(self, tablename, values):
         self.mycursor.execute(f"CREATE TABLE {tablename} {values}")
