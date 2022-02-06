@@ -1,7 +1,10 @@
 # from termcolor import colored
 import colorama
+import hashlib
+import os
 from colorama import Fore
 from pyfiglet import Figlet
+from Backend import commands
 
 colorama.init()
 
@@ -11,7 +14,9 @@ class StyleLogin:
     def __init__(self):
         self.name = ""
         self.sign = False
-        self.d = {}
+        self.pwd_manager = commands.DatabaseCommand()
+        self.pwd_manager.create_table("keychain", "(user varchar(50), pwd varchar(1000))")
+        self.d = self.pwd_manager.create_dict("keychain")
         f = open("Login/loginData.txt", "a+")
         f.close()
 
@@ -33,27 +38,11 @@ class StyleLogin:
         self.intro("LOGIN / SIGN-UP")
         LorS = input("Welcome! Please type 'S' to sign up! Or already have an account here? type 'L' to Login in! ")
 
-        with open("Login/loginData.txt", "r") as f:
-            for line in f:
-                try:
-                    if line == "":
-                        continue
-                    else:
-                        (key, value) = line.rstrip("\n").split(":")
-                        # print(1)
-                except ValueError:
-                    pass
-
-                self.d[key] = value
-        print(self.d)
-
         if LorS.lower() == "s":
             self.name = self.Sign()
-            self.sign = True
 
         elif LorS.lower() == "l":
             self.name = self.Log()
-            self.sign = False
 
         elif LorS == "ADMINMODE":
             if input("YOU ARE ENTERING A FORBIDDEN MODE! PWD: ") == "GODMODE":
@@ -84,7 +73,6 @@ class StyleLogin:
 
     def Sign(self):
         self.intro("SIGN-UP")
-        f = open("Login/loginData.txt", "a+")
         good_nme = False
         while not good_nme:
             usr_nme = input("What username do you prefer? ")
@@ -106,10 +94,10 @@ class StyleLogin:
             else:
                 print("Passwords do not match!")
 
+        self.pwd_manager.insert("keychain", (usr_nme, usr_pwd))
+
         self.intro("WELCOME!!", color="Green")
-        # f = open(self.filename, "a+")
-        f.write(usr_nme + ":" + usr_pwd + "\n")
-        return usr_nme
+        
 
     def adminmode(self):
         self.intro("ADMIN MODE", color="Red")

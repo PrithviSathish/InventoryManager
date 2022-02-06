@@ -30,18 +30,22 @@ class UI:
     def menu(self):
         ch = 0
         error = 0
-        while ch != 3:
+        while ch != 5:
             if error <= 3:
-                print("1. Get product details\n2. Sell a product\n3. Logout")
+                print("1. Get product details\n2. Sell a product\n3. Add a new product\n4. Update existing product details\n5. Logout")
                 ch = int(input("Enter your choice: "))
 
                 if ch == 1:
                     self.heading("Product Details")
-                    self.crawler.select_product()
+                    self.crawler.show_products()
                 elif ch == 2:
                     self.heading("Sell A Product")
                     self.crawler.profit_calc()
                 elif ch == 3:
+                    self.crawler.insert()
+                elif ch == 4:
+                    self.crawler.update()
+                elif ch == 5:
                     self.heading("Logout", "red")
                     print("Logging out...")
                 else:
